@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>User Management</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                {% if user != request.user %}
+                <a href="{% url 'delete_user' user.id %}" class="btn btn-danger btn-sm">Delete</a>
+                {% else %}
+                <em>Current User</em>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

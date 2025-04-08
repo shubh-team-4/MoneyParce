@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Welcome to MoneyParce</h1>
+  <p class="lead">
+    MoneyParce is your go-to app for managing your financial data safely and easily. Learn about our features and get started by creating an account.
+  </p>
+  <hr class="my-4">
+  <p>Explore our site to track your finance, change your account settings and more.</p>
+  <a class="btn btn-primary btn-lg" href="{% url 'about' %}" role="button">Learn more</a>
+</div>
+{% endblock %}
