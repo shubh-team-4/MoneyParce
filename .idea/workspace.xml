@@ -5,19 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f315f36-f843-4d89-96c3-960ee993fc81" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/core/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/templates/core/about.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/templates/core/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/templates/core/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/templates/core/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/templates/core/password_change.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/templates/core/signup.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/templates/core/user_list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/MoneyParce.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MoneyParce.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoneyParce/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MoneyParce/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MoneyParce/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MoneyParce/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/core/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +44,7 @@
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "first-user-stories",
     "last_opened_file_path": "C:/Users/erick/Documents/GitHub/MoneyParce/MoneyParce",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -112,7 +102,7 @@
       <option name="presentableId" value="Default" />
       <updated>1743877933704</updated>
       <workItem from="1743877934965" duration="37000" />
-      <workItem from="1744131673073" duration="2999000" />
+      <workItem from="1744131673073" duration="4180000" />
     </task>
     <servers />
   </component>
