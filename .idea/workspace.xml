@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9f315f36-f843-4d89-96c3-960ee993fc81" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/templates/core/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/core/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/core/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/core/password_change.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/password_change.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/core/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/signup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,7 +105,7 @@
       <option name="presentableId" value="Default" />
       <updated>1743877933704</updated>
       <workItem from="1743877934965" duration="37000" />
-      <workItem from="1744131673073" duration="4180000" />
+      <workItem from="1744131673073" duration="6166000" />
     </task>
     <servers />
   </component>
