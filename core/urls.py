@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from . import views
+from . import views, darkMode
 
 urlpatterns = [
     # Public pages
@@ -11,7 +11,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),  # Sign up page
     path('login/', auth_views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
-
+    path('darkmode/', darkMode.toggle_theme, name='dark mode'),
     # Password change (requires user to be logged in)
     path('password-change/', auth_views.PasswordChangeView.as_view(
         template_name='core/password_change.html',
