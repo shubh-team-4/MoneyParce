@@ -1,9 +1,8 @@
 from .models import UserProfile
 
-
+#Gets the theme when requested
 def theme_context(request):
     theme = 'light'
-
     if request.user.is_authenticated:
         try:
             user_profile = UserProfile.objects.get(user=request.user)
@@ -14,6 +13,8 @@ def theme_context(request):
         theme = request.session.get('theme', 'light')  # Default to 'light'
 
     return {'theme': theme}
+
+#This is run when the button is pressed
 def toggle_theme(request):
     # Check if user is authenticated
     if request.user.is_authenticated:
