@@ -1,53 +1,54 @@
 {% extends 'core/base.html' %}
 {% load static %}
-
 {% block content %}
 <div class="container-fluid">
 
-  <!-- Top Bar - "Hi, user" and optionally quick links (mimicking top-left text from your screenshot) -->
+  <!-- Top Bar: Greeting -->
   <div class="row mb-4">
     <div class="col d-flex align-items-center">
       <h4 class="me-4">Hi, {{ user.username|default:"User" }}</h4>
-      <!-- Example: Additional inline items or navigation tabs -->
-      <!--
-      <nav>
-        <ul class="nav">
-          <li class="nav-item"><a href="#" class="nav-link">Finance</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Tasks</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Onboarding</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Knowledge Base</a></li>
-        </ul>
-      </nav>
-      -->
     </div>
   </div>
 
-  <!-- Row for “Income & Expense” bar chart and pie chart for expenses -->
+  <!-- Row with charts and moved Actions dropdown -->
   <div class="row mb-4">
-    <!-- Bar Chart: Income & Expense -->
+    <!-- Income & Expense Chart with Actions dropdown -->
     <div class="col-md-8 mb-3">
       <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Income &amp; Expense</h5>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+              Actions
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="actionDropdown">
+              <li><a class="dropdown-item" href="{% url 'create_transaction' %}">New Transaction</a></li>
+              <li><a class="dropdown-item" href="{% url 'add_category' %}">Add Category</a></li>
+              <li><a class="dropdown-item" href="{% url 'set_budget' %}">Set Budget</a></li>
+              <li><a class="dropdown-item" href="{% url 'reports' %}">Reports</a></li>
+            </ul>
+          </div>
+        </div>
         <div class="card-body">
-          <h5 class="card-title">Income &amp; Expense</h5>
           <canvas id="incomeExpenseChart" height="100"></canvas>
         </div>
       </div>
     </div>
 
-    <!-- Pie Chart: Expenses by Category -->
+    <!-- Expenses Pie Chart -->
     <div class="col-md-4 mb-3">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Expenses {{ current_month_year|default:"July 2022" }}</h5>
           <h6 class="text-muted">{{ expenses|default:"272,200" }} $</h6>
           <canvas id="expensesPieChart" height="200"></canvas>
-          <!-- Legend or breakdown can be appended here if needed -->
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Row for “Account Balance” line chart and additional pie (revenue breakdown, etc.) -->
+  <!-- Additional charts and stats remain unchanged -->
   <div class="row mb-4">
     <!-- Account Balance (Line Chart) -->
     <div class="col-md-8 mb-3">
@@ -59,7 +60,7 @@
       </div>
     </div>
 
-    <!-- Another Pie Chart (Revenue or category breakdown) -->
+    <!-- Revenue Pie Chart -->
     <div class="col-md-4 mb-3">
       <div class="card">
         <div class="card-body">
@@ -71,7 +72,7 @@
     </div>
   </div>
 
-  <!-- Summary / Quick Stats -->
+  <!-- Key Stats -->
   <div class="row mb-4">
     <div class="col">
       <div class="card p-3">
@@ -83,7 +84,7 @@
     </div>
   </div>
 
-  <!-- Spending by Category (simple list or table) -->
+  <!-- Spending by Category -->
   <div class="row mb-4">
     <div class="col">
       <div class="card p-3">
@@ -97,22 +98,9 @@
     </div>
   </div>
 
-  <!-- Quick Actions -->
-  <div class="row mb-4">
-    <div class="col">
-      <div class="card p-3">
-        <h5>Quick Actions</h5>
-        <a href="{% url 'create_transaction' %}" class="btn btn-primary me-2 mb-2">New Transaction</a>
-        <a href="{% url 'add_category' %}" class="btn btn-secondary me-2 mb-2">Add Category</a>
-        <a href="{% url 'set_budget' %}" class="btn btn-secondary me-2 mb-2">Set Budget</a>
-        <a href="{% url 'reports' %}" class="btn btn-secondary mb-2">Reports</a>
-      </div>
-    </div>
-  </div>
+</div>
 
-</div> <!-- /.container-fluid -->
-
-<!-- Include Chart.js from CDN -->
+<!-- Chart.js CDN and scripts (same as before) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 <script>
   // ----------------------------------
@@ -236,5 +224,7 @@
       responsive: true
     }
   });
+</script>
+
 </script>
 {% endblock %}

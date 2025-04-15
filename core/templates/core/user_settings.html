@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="card shadow-sm mx-auto mt-4" style="max-width: 600px;">
+  <div class="card-body">
+    <h3 class="card-title mb-4">User Settings</h3>
+
+    <!-- Change Password Link -->
+    <h5>Change Password</h5>
+    <p>
+      <a href="{% url 'password_change' %}" class="btn btn-primary">Change Password</a>
+    </p>
+    <hr>
+
+    <!-- Placeholder for Updating Profile Picture -->
+    <h5>Update Profile Picture</h5>
+    <p>
+      <!-- Insert a form or link to update profile picture -->
+      <em>Feature coming soon.</em>
+    </p>
+    <hr>
+
+    <!-- Update Avatar Color -->
+    <h5>Pick Your Avatar Color</h5>
+    <form method="post" action="{% url 'update_profile_color' %}">
+      {% csrf_token %}
+      <div class="mb-3">
+        <input type="color" name="avatar_color" value="{{ user.profile.color|default:'#0d6efd' }}" class="form-control form-control-color" title="Choose your color">
+      </div>
+      <button type="submit" class="btn btn-secondary">Update Color</button>
+    </form>
+    <hr>
+
+    <!-- Delete Account -->
+    <h5>Delete Account</h5>
+    <p>
+      <a href="{% url 'delete_account' %}" class="btn btn-danger"
+         onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+        Delete My Account
+      </a>
+    </p>
+  </div>
+</div>
+{% endblock %}

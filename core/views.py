@@ -56,13 +56,12 @@ def delete_user(request, user_id):
 
 @login_required
 def create_transaction(request):
-    """Allows users to manually input transactions (User Stories #8 and #9)."""
+    """Allows users to manually input transactions."""
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         if form.is_valid():
             transaction = form.save(commit=False)
             transaction.user = request.user
-            # Stub for Plaid auto-categorization could be inserted here (User Story #10)
             transaction.save()
             messages.success(request, "Transaction added successfully!")
             return redirect('dashboard')
@@ -72,7 +71,7 @@ def create_transaction(request):
 
 @login_required
 def add_category(request):
-    """Allows users to create categories for expenditures (User Story #11)."""
+    """Allows users to create categories for expenditures."""
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
@@ -87,7 +86,7 @@ def add_category(request):
 
 @login_required
 def set_budget(request):
-    """Allows users to set or adjust their budget (User Stories #12 and #13)."""
+    """Allows users to set or adjust their budget."""
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
         form = BudgetForm(request.POST, instance=user_profile)
@@ -101,7 +100,7 @@ def set_budget(request):
 
 @login_required
 def dashboard(request):
-    """Dashboard showing net worth and spending breakdown (User Stories #17 and #18)."""
+    """Dashboard showing net worth and spending breakdown."""
     transactions = Transaction.objects.filter(user=request.user)
     income = sum(t.amount for t in transactions if t.transaction_type == 'income')
     expenses = sum(t.amount for t in transactions if t.transaction_type == 'expense')
@@ -124,7 +123,7 @@ def dashboard(request):
 
 @login_required
 def reports(request):
-    """Shows a financial report (User Story #15)."""
+    """Shows a financial report."""
     transactions = Transaction.objects.filter(user=request.user)
     total_income = sum(t.amount for t in transactions if t.transaction_type == 'income')
     total_expenses = sum(t.amount for t in transactions if t.transaction_type == 'expense')
@@ -137,7 +136,7 @@ def reports(request):
 
 @login_required
 def export_pdf(request):
-    """Exports the financial report as a PDF (User Story #16)."""
+    """Exports the financial report as a PDF."""
     buffer = io.BytesIO()
     p = reportlab.pdfgen.canvas.Canvas(buffer)
     transactions = Transaction.objects.filter(user=request.user)
@@ -160,10 +159,41 @@ def export_pdf(request):
 
 @admin_required
 def review_financial_advice(request):
-    """Admin view to review AI-generated financial advice (User Story #20). This stub can be expanded."""
+    """Admin view to review AI-generated financial advice."""
     advice_list = [
         {"id": 1, "advice": "Consider reducing discretionary spending."},
         {"id": 2, "advice": "Increase your savings rate for long-term goals."},
     ]
     context = {'advice_list': advice_list}
     return render(request, 'core/review_financial_advice.html', context)
+
+# -----------------------------
+# New Views for User Settings
+# -----------------------------
+
+@login_required
+def user_settings(request):
+    """Display the user settings page."""
+    return render(request, 'core/user_settings.html')
+
+@login_required
+def update_profile_color(request):
+    """Update the user’s avatar color."""
+    if request.method == 'POST':
+        new_color = request.POST.get('avatar_color', '#0d6efd')
+        user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+        user_profile.color = new_color
+        user_profile.save()
+        messages.success(request, "Avatar color updated successfully!")
+    return redirect('user_settings')
+
+@login_required
+def delete_account(request):
+    """Delete the current user’s account after confirmation."""
+    if request.method == 'POST':
+        user = request.user
+        user.delete()
+        messages.success(request, "Your account has been deleted.")
+        return redirect('index')
+    # If GET request, show confirmation page
+    return render(request, 'core/confirm_delete_account.html')

@@ -21,7 +21,7 @@ urlpatterns = [
     path('users/', views.user_list, name='user_list'),
     path('users/delete/<int:user_id>/', views.delete_user, name='delete_user'),
 
-    # New routes for financial features
+    # Financial features
     path('transaction/new/', views.create_transaction, name='create_transaction'),
     path('category/new/', views.add_category, name='add_category'),
     path('budget/', views.set_budget, name='set_budget'),
@@ -29,4 +29,9 @@ urlpatterns = [
     path('reports/', views.reports, name='reports'),
     path('reports/export/', views.export_pdf, name='export_pdf'),
     path('admin/advice/', views.review_financial_advice, name='review_financial_advice'),
+
+    # New routes for User Settings
+    path('settings/', views.user_settings, name='user_settings'),
+    path('settings/update_color/', views.update_profile_color, name='update_profile_color'),
+    path('settings/delete_account/', views.delete_account, name='delete_account'),
 ]
