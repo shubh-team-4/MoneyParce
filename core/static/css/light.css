@@ -1,3 +1,220 @@
-body {
-  background-color: white;
+/* Root theme variables for light mode */
+:root {
+  --bg-color: #f8f9fa;         /* Light background */
+  --surface-color: #ffffff;    /* White surfaces */
+  --text-color: #212529;       /* Dark text */
+  --accent-color: #0d6efd;     /* Blue accent */
+  --link-color: #0d6efd;       /* Link color */
+  --border-color: #ddd;        /* Light border color */
+  --hover-color: #e2e6ea;       /* Light hover effect */
+  /* Logo-specific variables for light mode */
+  --logo-dollar-color: #ffffff;
+  --logo-text-color: #212529;
+  --logo-gradient-start: #0d6efd;
+  --logo-gradient-end: #0a58ca;
 }
+
+/* Base styles */
+html, body {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6,
+p, span, label, div, li, dt, dd, small, strong, em {
+  color: var(--text-color) !important;
+}
+
+/* Links */
+a {
+  color: var(--link-color) !important;
+}
+a:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Navbar (generic and Bootstrap/Django admin compatible) */
+nav, .navbar, .nav, .navbar-default, .navbar-light, .navbar-dark {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.navbar a, .nav a {
+  color: var(--text-color) !important;
+}
+.navbar a:hover, .nav a:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Buttons */
+button, input[type="submit"], .btn {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+button:hover, .btn:hover {
+  background-color: var(--accent-color) !important;
+  color: #fff !important;
+}
+
+/* Forms */
+input, textarea, select, .form-control, .input, .textfield, .textinput {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+input::placeholder, textarea::placeholder {
+  color: #6c757d !important;
+}
+
+/* Textareas / textboxes specifically */
+textarea, input[type="text"], input[type="email"], input[type="password"],
+input[type="search"], input[type="url"], input[type="tel"], input[type="number"] {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Tables */
+table {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid var(--border-color) !important;
+  padding: 0.5rem;
+}
+thead {
+  background-color: var(--hover-color) !important;
+}
+
+/* Messages / alerts */
+.alert, .messages, .errorlist, .message, .notification {
+  background-color: #f8f9fa !important; /* Subtle light background */
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 0.75rem;
+  border-radius: 5px;
+}
+
+/* Cards, containers, blocks */
+.card, .panel, .container, .box, .content-box {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 1rem;
+  border-radius: 0.75rem;
+}
+
+/* Django admin and fieldsets */
+fieldset, legend, .module, .form-row, .form-group, .submit-row, .selector-chosen {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 1rem;
+}
+
+/* Misc */
+hr {
+  border-color: var(--border-color) !important;
+}
+pre, code {
+  background-color: #e9ecef !important;
+  color: var(--text-color) !important;
+}
+
+/* Modal and overlays */
+.modal, .overlay, .popup, .dialog {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Hero section override for light mode */
+.hero-section,
+.bg-light,
+.bg-light.text-center,
+.bg-light.p-5.rounded-lg.text-center {
+  background-color: #fff !important;
+  color: var(--text-color) !important;
+  background-image: none !important;
+}
+
+/* Optional: style overlay within hero section if using inline overlay */
+.hero-section div[style*="rgba(0, 0, 0"] {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Make hero headings/text readable */
+.hero-section h1,
+.hero-section .display-4,
+.hero-section p,
+.hero-section .lead {
+  color: var(--text-color) !important;
+}
+
+/* Force buttons in hero section to follow light mode styling */
+.hero-section .btn,
+.bg-light .btn {
+  background-color: var(--accent-color) !important;
+  color: #fff !important;
+  border: none;
+}
+.hero-section .btn:hover {
+  background-color: #0b5ed7 !important;
+  color: #fff !important;
+}
+
+/* Dropdown menus */
+.dropdown-menu {
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.dropdown-menu a.dropdown-item {
+  color: var(--text-color) !important;
+}
+.dropdown-menu a.dropdown-item:hover,
+.dropdown-menu a.dropdown-item:focus {
+  background-color: var(--hover-color) !important;
+  color: var(--text-color) !important;
+}
+/*
+   Logout Button Overrides:
+   These rules target the logout button (using .btn-link) within the navbar
+   to remove the solid background style from our generic button rules and fix alignment.
+*/
+
+/* Ensure the form wrapping the logout button is displayed inline and vertically centered */
+.nav-item form {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+/* Reset the styling for .btn-link to make it look like a text link */
+.btn-link {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--link-color) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  vertical-align: middle;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+/* Optionally, if the logout button still appears misaligned, you can force its line height to match */
+.navbar .btn-link {
+  line-height: 2; /* Adjust if needed to match the other nav items */
+}
+.navbar-brand .logo {
+  max-height: 60px; /* Adjust as needed */
+  height: auto;
+  width: auto;
+}
+
+
