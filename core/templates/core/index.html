@@ -1,46 +1,52 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<!-- Hero Section -->
-    <div class="hero-section p-5 rounded-lg text-center" style="background-image: none;">
-  <div class="hero-overlay">
-    <h1 class="display-4">Welcome to MoneyParce</h1>
-    <p class="lead">The smart way to manage your finances securely and effortlessly.</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">Get Started</a>
-  </div>
-</div>
+  {% if user.is_authenticated %}
+    <script>
+      // Redirect authenticated users to the dashboard.
+      window.location.href = "{% url 'dashboard' %}";
+    </script>
+  {% else %}
+    <!-- Hero Section for non-authenticated visitors-->
+    <div class="hero-section p-5 rounded-lg text-center">
+      <div class="hero-overlay">
+        <h1 class="display-4">Welcome to MoneyParce</h1>
+        <p class="lead">The smart way to manage your finances securely and effortlessly.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">Get Started</a>
+      </div>
+    </div>
 
-<!-- Features Section -->
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Our Features</h2>
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm">
-        <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Feature 1">
-        <div class="card-body">
-          <h5 class="card-title">Secure Account Management</h5>
-          <p class="card-text">Keep your financial data safe with our state-of-the-art security measures.</p>
+    <!-- Features Section -->
+    <div class="container mt-5">
+      <h2 class="text-center mb-4">Our Features</h2>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Secure Account Management">
+            <div class="card-body">
+              <h5 class="card-title">Secure Account Management</h5>
+              <p class="card-text">Keep your financial data safe with our state-of-the-art security measures.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Responsive Design">
+            <div class="card-body">
+              <h5 class="card-title">Responsive Design</h5>
+              <p class="card-text">Access MoneyParce on any device – desktop, tablet, or mobile with ease.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="User Friendly">
+            <div class="card-body">
+              <h5 class="card-title">User Friendly</h5>
+              <p class="card-text">Enjoy an intuitive interface designed with your convenience in mind.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm">
-        <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Feature 2">
-        <div class="card-body">
-          <h5 class="card-title">Responsive Design</h5>
-          <p class="card-text">Access MoneyParce on any device – desktop, tablet, or mobile with ease.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm">
-        <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Feature 3">
-        <div class="card-body">
-          <h5 class="card-title">User Friendly</h5>
-          <p class="card-text">Enjoy an intuitive interface designed with your convenience in mind.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  {% endif %}
 {% endblock %}
-

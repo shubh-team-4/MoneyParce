@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="box">
+    <h2>Dashboard</h2>
+    <p><strong>Total Income:</strong> ${{ income }}</p>
+    <p><strong>Total Expenses:</strong> ${{ expenses }}</p>
+    <p><strong>Net Worth:</strong> ${{ net_worth }}</p>
+
+    <h3 class="mt-4">Spending by Category</h3>
+    <ul>
+    {% for category, total in category_breakdown %}
+        <li>{{ category }}: ${{ total }}</li>
+    {% endfor %}
+    </ul>
+
+    <!-- Quick Actions Section -->
+    <div class="mt-4">
+        <h4>Quick Actions</h4>
+        <a href="{% url 'create_transaction' %}" class="btn btn-primary me-2 mb-2">New Transaction</a>
+        <a href="{% url 'add_category' %}" class="btn btn-secondary me-2 mb-2">Add Category</a>
+        <a href="{% url 'set_budget' %}" class="btn btn-secondary me-2 mb-2">Set Budget</a>
+        <a href="{% url 'reports' %}" class="btn btn-secondary mb-2">Reports</a>
+    </div>
+</div>
+{% endblock %}
