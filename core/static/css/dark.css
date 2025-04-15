@@ -1,3 +1,163 @@
-body {
-  background-color: black;
+/* Root theme variables */
+:root {
+  --bg-color: #121212;
+  --surface-color: #1e1e1e;
+  --text-color: #e0e0e0;
+  --accent-color: #bb86fc;
+  --link-color: #8ab4f8;
+  --border-color: #333;
+  --hover-color: #2c2c2c;
+}
+
+/* Base */
+html, body {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6,
+p, span, label, div, li, dt, dd, small, strong, em {
+  color: var(--text-color) !important;
+}
+
+/* Links */
+a {
+  color: var(--link-color) !important;
+}
+a:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Navbar (generic and Bootstrap/Django admin compatible) */
+nav, .navbar, .nav, .navbar-default, .navbar-light, .navbar-dark {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.navbar a, .nav a {
+  color: var(--text-color) !important;
+}
+.navbar a:hover, .nav a:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Buttons */
+button, input[type="submit"], .btn {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+button:hover, .btn:hover {
+  background-color: var(--accent-color) !important;
+  color: #000 !important;
+}
+
+/* Forms */
+input, textarea, select, .form-control, .input, .textfield, .textinput {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+input::placeholder, textarea::placeholder {
+  color: #999 !important;
+}
+
+/* Textareas / textboxes specifically */
+textarea, input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="url"], input[type="tel"], input[type="number"] {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Tables */
+table {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid var(--border-color) !important;
+  padding: 0.5rem;
+}
+thead {
+  background-color: var(--hover-color) !important;
+}
+
+/* Messages / alerts */
+.alert, .messages, .errorlist, .message, .notification {
+  background-color: #2a2a2a !important;
+  color: #f5f5f5 !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 0.75rem;
+  border-radius: 5px;
+}
+
+/* Cards, containers, blocks */
+.card, .panel, .container, .box, .content-box {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 1rem;
+  border-radius: 0.75rem;
+}
+
+/* Django admin and fieldsets */
+fieldset, legend, .module, .form-row, .form-group, .submit-row, .selector-chosen {
+  background-color: var(--surface-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 1rem;
+}
+
+/* Misc */
+hr {
+  border-color: var(--border-color) !important;
+}
+pre, code {
+  background-color: #1f1f1f !important;
+  color: #ccc !important;
+}
+
+/* Modal and overlays */
+.modal, .overlay, .popup, .dialog {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Hero section override for dark mode */
+.hero-section,
+.bg-light,
+.bg-light.text-center,
+.bg-light.p-5.rounded-lg.text-center {
+  background-color: #1a1a1a !important;
+  color: var(--text-color) !important;
+  background-image: none !important;
+}
+
+/* Optional: style overlay within hero section if using inline overlay */
+.hero-section div[style*="rgba(0, 0, 0"] {
+  background-color: rgba(30, 30, 30, 0.75) !important;
+}
+
+/* Make hero headings/text readable */
+.hero-section h1,
+.hero-section .display-4,
+.hero-section p,
+.hero-section .lead {
+  color: var(--text-color) !important;
+}
+
+/* Force buttons in hero section to follow dark theme */
+.hero-section .btn,
+.bg-light .btn {
+  background-color: var(--accent-color) !important;
+  color: #000 !important;
+  border: none;
+}
+.hero-section .btn:hover {
+  background-color: #fff !important;
+  color: #000 !important;
 }

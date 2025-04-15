@@ -1,8 +1,8 @@
 {% extends 'core/base.html' %}
 {% block content %}
 <!-- Hero Section -->
-<div class="bg-light p-5 rounded-lg text-center" style="background-image: url('https://via.placeholder.com/1500x400'); background-size: cover; background-position: center; color: white;">
-  <div style="background-color: rgba(0, 0, 0, 0.6); padding: 2rem;">
+    <div class="hero-section p-5 rounded-lg text-center" style="background-image: none;">
+  <div class="hero-overlay">
     <h1 class="display-4">Welcome to MoneyParce</h1>
     <p class="lead">The smart way to manage your finances securely and effortlessly.</p>
     <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">Get Started</a>
