@@ -103,7 +103,7 @@
                   <form action="{% url 'logout' %}" method="post" class="d-inline">{% csrf_token %}
                       <a href="#" class="nav-link logout-link"
                       onclick="this.parentNode.submit(); return false;">
-                          Log Out (Hi, {{ user.username }})
+                          Log Out ({{ user.username }})
                       </a>
                   </form>
               </li>

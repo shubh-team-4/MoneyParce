@@ -8,10 +8,15 @@
   --border-color: #333;
   --hover-color: #2c2c2c;
   /* Logo-specific variables for dark mode */
-  --logo-dollar-color: #e0e0e0; /* Use a color that contrasts well on dark surfaces */
+  --logo-dollar-color: #e0e0e0;
   --logo-text-color: #e0e0e0;
-  --logo-gradient-start: #8ab4f8; /* A lighter blue variant for dark backgrounds */
+  --logo-gradient-start: #8ab4f8;
   --logo-gradient-end: #bb86fc;
+}
+
+/* Global transition for smoother theme toggling */
+html, body, nav, .navbar, .container, .card, .alert, .dropdown-menu, button, input, textarea, select, a {
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
 }
 
 /* Base */
@@ -70,7 +75,8 @@ input::placeholder, textarea::placeholder {
 }
 
 /* Textareas / textboxes specifically */
-textarea, input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="url"], input[type="tel"], input[type="number"] {
+textarea, input[type="text"], input[type="email"], input[type="password"],
+input[type="search"], input[type="url"], input[type="tel"], input[type="number"] {
   background-color: var(--surface-color) !important;
   color: var(--text-color) !important;
   border: 1px solid var(--border-color) !important;
@@ -166,6 +172,7 @@ pre, code {
   background-color: #fff !important;
   color: #000 !important;
 }
+
 /* Dropdown menus */
 .dropdown-menu {
   background-color: var(--surface-color) !important;
@@ -180,7 +187,7 @@ pre, code {
   color: var(--text-color) !important;
 }
 .navbar-brand .logo {
-  max-height: 60px; /* Adjust as needed */
+  max-height: 60px;
   height: auto;
   width: auto;
 }

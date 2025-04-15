@@ -1,17 +1,22 @@
 /* Root theme variables for light mode */
 :root {
-  --bg-color: #f8f9fa;         /* Light background */
-  --surface-color: #ffffff;    /* White surfaces */
-  --text-color: #212529;       /* Dark text */
-  --accent-color: #0d6efd;     /* Blue accent */
-  --link-color: #0d6efd;       /* Link color */
-  --border-color: #ddd;        /* Light border color */
-  --hover-color: #e2e6ea;       /* Light hover effect */
+  --bg-color: #f8f9fa;
+  --surface-color: #ffffff;
+  --text-color: #212529;
+  --accent-color: #0d6efd;
+  --link-color: #0d6efd;
+  --border-color: #ddd;
+  --hover-color: #e2e6ea;
   /* Logo-specific variables for light mode */
   --logo-dollar-color: #ffffff;
   --logo-text-color: #212529;
   --logo-gradient-start: #0d6efd;
   --logo-gradient-end: #0a58ca;
+}
+
+/* Global transition for smoother theme toggling */
+html, body, nav, .navbar, .container, .card, .alert, .dropdown-menu, button, input, textarea, select, a {
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
 }
 
 /* Base styles */
@@ -93,7 +98,7 @@ thead {
 
 /* Messages / alerts */
 .alert, .messages, .errorlist, .message, .notification {
-  background-color: #f8f9fa !important; /* Subtle light background */
+  background-color: #f8f9fa !important;
   color: var(--text-color) !important;
   border: 1px solid var(--border-color) !important;
   padding: 0.75rem;
@@ -161,7 +166,7 @@ pre, code {
 .bg-light .btn {
   background-color: var(--accent-color) !important;
   color: #fff !important;
-  border: none;
+  border: none !important;
 }
 .hero-section .btn:hover {
   background-color: #0b5ed7 !important;
@@ -181,20 +186,17 @@ pre, code {
   background-color: var(--hover-color) !important;
   color: var(--text-color) !important;
 }
+
 /*
    Logout Button Overrides:
    These rules target the logout button (using .btn-link) within the navbar
    to remove the solid background style from our generic button rules and fix alignment.
 */
-
-/* Ensure the form wrapping the logout button is displayed inline and vertically centered */
 .nav-item form {
   display: inline-flex;
   align-items: center;
   margin: 0;
 }
-
-/* Reset the styling for .btn-link to make it look like a text link */
 .btn-link {
   background-color: transparent !important;
   border: none !important;
@@ -206,15 +208,11 @@ pre, code {
   font-weight: normal;
   text-decoration: none;
 }
-
-/* Optionally, if the logout button still appears misaligned, you can force its line height to match */
 .navbar .btn-link {
-  line-height: 2; /* Adjust if needed to match the other nav items */
+  line-height: 2;
 }
 .navbar-brand .logo {
-  max-height: 60px; /* Adjust as needed */
+  max-height: 60px;
   height: auto;
   width: auto;
 }
-
-
