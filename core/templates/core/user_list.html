@@ -1,7 +1,8 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block content %}
 <h2>User Management</h2>
-<table class="table table-striped">
+<table class="table table-striped {% if theme == 'dark' %}table-dark{% endif %}">
     <thead>
         <tr>
             <th>ID</th>
