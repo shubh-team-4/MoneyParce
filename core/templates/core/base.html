@@ -68,61 +68,66 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
-  {% if user.is_staff %}
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'user_list' %}">Manage Users</a>
-    </li>
-  {% endif %}
-   <!-- Home Icon -->
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'dashboard' %}" title="Dashboard">
-      <i class="fas fa-home"></i>
-    </a>
-  </li>
-  <!-- User Avatar Dropdown -->
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
-       data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0;">
-      <div style="
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: {% if user.profile.color %}{{ user.profile.color }}{% else %}#0d6efd{% endif %};
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-weight: 600;
-        margin-left: 10px;
-      ">
-        {{ user.username|first|upper }}
-      </div>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-      <li>
-        <a class="dropdown-item" href="{% url 'user_settings' %}"><i class="fas fa-cog me-2"></i>
-            Settings</a>
-      </li>
-      <li>
-  <a class="dropdown-item" href="#"
-     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-    <i class="fas fa-sign-out-alt me-2"></i> Log Out
-  </a>
-</li>
+              {% if user.is_staff %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'user_list' %}">Manage Users</a>
+                </li>
+              {% endif %}
+              <!-- Home Icon -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard' %}" title="Dashboard">
+                  <i class="fas fa-home"></i>
+                </a>
+              </li>
+              <!-- User Avatar Dropdown -->
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0;">
+                  {% if user.userprofile.profile_picture %}
+                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Avatar"
+                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-left: 10px;">
+                  {% else %}
+                    <div style="
+                      width: 40px;
+                      height: 40px;
+                      border-radius: 50%;
+                      background-color: {% if user.userprofile.color %}{{ user.userprofile.color }}{% else %}#0d6efd{% endif %};
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      color: #fff;
+                      font-weight: 600;
+                      margin-left: 10px;
+                    ">
+                      {{ user.username|first|upper }}
+                    </div>
+                  {% endif %}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'user_settings' %}">
+                      <i class="fas fa-cog me-2"></i> Settings
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                      <i class="fas fa-sign-out-alt me-2"></i> Log Out
+                    </a>
+                  </li>
+                </ul>
+              </li>
 
-    </ul>
-  </li>
-
-  <!-- Dark Mode Toggle Icon -->
-  <li class="nav-item">
-    <a href="{% url 'dark mode' %}" class="nav-link" title="Toggle Dark Mode">
-      {% if theme == 'dark' %}
-        <i class="fas fa-sun"></i>
-      {% else %}
-        <i class="fas fa-moon"></i>
-      {% endif %}
-    </a>
-  </li>
+              <!-- Dark Mode Toggle Icon -->
+              <li class="nav-item">
+                <a href="{% url 'dark mode' %}" class="nav-link" title="Toggle Dark Mode">
+                  {% if theme == 'dark' %}
+                    <i class="fas fa-sun"></i>
+                  {% else %}
+                    <i class="fas fa-moon"></i>
+                  {% endif %}
+                </a>
+              </li>
             {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Home</a>
@@ -153,8 +158,8 @@
     </nav>
 
     <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-  {% csrf_token %}
-</form>
+      {% csrf_token %}
+    </form>
 
     <div class="container">
       {% if messages %}

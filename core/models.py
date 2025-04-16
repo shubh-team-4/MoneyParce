@@ -7,6 +7,10 @@ class UserProfile(models.Model):
     theme = models.CharField(max_length=10, default='light')
     budget = models.FloatField(default = 0)
     spending = models.FloatField(default = 0)
+    #profile color
+    color = models.CharField(max_length=7, default='#0d6efd')
+    # profile picture:
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
 
     def __str__(self):
         return self.user.username

@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+
 from . import views, darkMode
 
 urlpatterns = [
@@ -34,4 +35,6 @@ urlpatterns = [
     path('settings/', views.user_settings, name='user_settings'),
     path('settings/update_color/', views.update_profile_color, name='update_profile_color'),
     path('settings/delete_account/', views.delete_account, name='delete_account'),
+    path('settings/update_picture/', views.update_profile_picture, name='update_profile_picture'),
+    path('settings/remove_picture/', views.remove_profile_picture, name='remove_profile_picture'),
 ]

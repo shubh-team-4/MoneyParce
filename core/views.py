@@ -178,15 +178,40 @@ def user_settings(request):
 
 @login_required
 def update_profile_color(request):
-    """Update the user’s avatar color."""
+    """Update the user’s profile color."""
     if request.method == 'POST':
         new_color = request.POST.get('avatar_color', '#0d6efd')
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
         user_profile.color = new_color
         user_profile.save()
-        messages.success(request, "Avatar color updated successfully!")
+        messages.success(request, "Profile color updated successfully!")
     return redirect('user_settings')
-
+@login_required
+def update_profile_picture(request):
+    if request.method == 'POST':
+        # Ensure the file is provided:
+        if 'profile_picture' in request.FILES:
+            picture = request.FILES['profile_picture']
+            user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+            user_profile.profile_picture = picture
+            user_profile.save()
+            messages.success(request, "Profile picture updated successfully!")
+        else:
+            messages.error(request, "Please upload a valid image.")
+        return redirect('user_settings')
+    else:
+        messages.error(request, "Invalid request.")
+        return redirect('user_settings')
+@login_required
+def remove_profile_picture(request):
+    if request.method == 'POST':
+        user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+        user_profile.profile_picture = None  # Clear the image
+        user_profile.save()
+        messages.success(request, "Profile picture removed successfully!")
+    else:
+        messages.error(request, "Invalid request.")
+    return redirect('user_settings')
 @login_required
 def delete_account(request):
     """Delete the current user’s account after confirmation."""
