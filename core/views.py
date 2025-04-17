@@ -66,7 +66,8 @@ def create_transaction(request):
             messages.success(request, "Transaction added successfully!")
             return redirect('dashboard')
     else:
-        form = TransactionForm()
+        form = TransactionForm(user=request.user)
+
     return render(request, 'core/create_transaction.html', {'form': form})
 
 @login_required

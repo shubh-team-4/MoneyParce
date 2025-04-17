@@ -14,10 +14,18 @@ class TransactionForm(forms.ModelForm):
         model = Transaction
         fields = ['amount', 'transaction_type', 'category']
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(TransactionForm, self).__init__(*args, **kwargs)
+        if self.user:
+            self.fields['category'].queryset = Category.objects.filter(user=self.user)
+
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['name']
+
+
 
 class BudgetForm(forms.ModelForm):
     class Meta:
