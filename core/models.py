@@ -39,3 +39,14 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.user.username}"
+
+class SavingsGoal(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    goal_name = models.CharField(max_length=50)
+    target_amount = models.FloatField()
+    curr_amount = models.FloatField(default=0.0)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.id} - {self.user.username}"

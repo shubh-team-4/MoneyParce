@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Transaction, Category, UserProfile
+from .models import SavingsGoal
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=254, required=True, help_text="Required. Enter a valid email address.")
@@ -31,3 +32,11 @@ class BudgetForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['budget']
+
+class SavingsGoalForm(forms.ModelForm):
+    class Meta:
+        model = SavingsGoal
+        fields = ['goal_name', 'target_amount']
+
+class AddToGoalForm(forms.Form):
+    amount = forms.FloatField(label='Add Amount')

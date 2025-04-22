@@ -28,6 +28,8 @@ urlpatterns = [
     path('budget/', views.set_budget, name='set_budget'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('reports/', views.reports, name='reports'),
+    path('savings/', views.savings, name='savings_goal'),
+    path('savings/add/<int:goal_id>/', views.add_to_goal, name='add_to_goal'),
     path('reports/export/', views.export_pdf, name='export_pdf'),
     path('admin/advice/', views.review_financial_advice, name='review_financial_advice'),
 

@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseForbidden, FileResponse
-from .forms import SignUpForm, TransactionForm, CategoryForm, BudgetForm
-from .models import Transaction, Category, UserProfile
+from .forms import SignUpForm, TransactionForm, CategoryForm, BudgetForm, SavingsGoalForm, AddToGoalForm
+from .models import Transaction, Category, UserProfile, SavingsGoal
 import io
 import reportlab.pdfgen.canvas
 
@@ -134,6 +134,39 @@ def reports(request):
         'transactions': transactions,
     }
     return render(request, 'core/reports.html', context)
+
+@login_required
+def savings(request):
+    goals = SavingsGoal.objects.filter(user=request.user)
+    if request.method == 'POST':
+        savings_goal_form = SavingsGoalForm(request.POST)
+        if savings_goal_form.is_valid():
+            goal = savings_goal_form.save(commit=False)
+            goal.user = request.user
+            goal.save()
+            return redirect('savings_goal')
+    else:
+        savings_goal_form = SavingsGoalForm()
+
+    for goal in goals:
+        goal.add_form=AddToGoalForm()
+
+    return render(request, 'core/savings_goal.html', {
+        'savings_goal_form': savings_goal_form,
+        'goals': goals,
+            #'add_forms': {g.id: AddToGoalForm() for g in goals}
+    })
+@login_required
+def add_to_goal(request, goal_id):
+    goal = get_object_or_404(SavingsGoal, id=goal_id, user=request.user)
+    if request.method == 'POST':
+        add_goal_form = AddToGoalForm(request.POST)
+        if add_goal_form.is_valid():
+            goal.curr_amount += add_goal_form.cleaned_data['amount']
+            goal.save()
+    return redirect('savings_goal')
+
+
 
 @login_required
 def export_pdf(request):

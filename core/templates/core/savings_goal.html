@@ -1,0 +1,27 @@
+<!-- core/templates/core/savings_goal.html -->
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="box">
+    <h2>Savings Goals</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ savings_goal_form.as_p }}
+        <button type="submit" class="btn btn-primary">Create Savings Goal</button>
+    </form>
+</div>
+
+{% for goal in goals %}
+    <div class="box">
+    <h4>{{ goal.goal_name }}</h4>
+        <p>Goal: ${{ goal.target_amount }} | Progress: ${{ goal.curr_amount }}</p>
+        <progress value="{{ goal.curr_amount }}" max="{{ goal.target_amount }}" style="width: 100%"></progress>
+    <form method="post" action="{% url 'add_to_goal' goal.id %}">
+        {% csrf_token %}
+        {{ goal.add_form.as_p }}
+        <button type="submit" class="btn btn-primary">Add to Goal</button>
+    </form>
+</div>
+{% endfor %}
+{% endblock %}
