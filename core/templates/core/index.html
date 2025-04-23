@@ -1,4 +1,5 @@
 {% extends 'core/base.html' %}
+
 {% block content %}
   {% if user.is_authenticated %}
     <script>
@@ -9,9 +10,15 @@
     <!-- Hero Section for non-authenticated visitors -->
     <div class="hero-section p-5 rounded-lg text-center bg-light">
       <div class="hero-overlay">
-        <!-- MoneyParce Logo (Large) -->
+        <!-- Responsive MoneyParce Logo -->
         <div class="mb-4">
-          <svg class="logo mx-auto d-block" xmlns="http://www.w3.org/2000/svg" width="800" height="260" viewBox="0 0 325 100">
+          <svg
+            class="mx-auto d-block w-100"
+            style="max-width:800px; height:auto;"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 325 100"
+            preserveAspectRatio="xMidYMid meet"
+          >
             <defs>
               <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="var(--logo-gradient-start, #0d6efd)"/>
@@ -29,8 +36,10 @@
             </text>
           </svg>
         </div>
-        <h1 class="display-4" style="font-weight:600;">Welcome to MoneyParce</h1>
-        <p class="lead" style="font-weight:600;">Your personal finance hub. Track your spending, set and achieve savings goals, and budget with confidence.</p>
+        <h1 class="display-4 fw-semibold">Welcome to MoneyParce</h1>
+        <p class="lead fw-semibold">
+          Your personal finance hub. Track your spending, set and achieve savings goals, and budget with confidence.
+        </p>
         <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">Get Started</a>
       </div>
     </div>
@@ -47,7 +56,9 @@
             </div>
             <div class="card-body text-center">
               <h5 class="card-title">Budget Planner</h5>
-              <p class="card-text">Set monthly budgets and get alerts when you’re close to overspending. Plan ahead with customizable categories and track progress with real-time insights.</p>
+              <p class="card-text">
+                Set monthly budgets and get alerts when you’re close to overspending. Plan ahead with customizable categories and track progress with real-time insights.
+              </p>
             </div>
           </div>
         </div>
@@ -59,7 +70,9 @@
             </div>
             <div class="card-body text-center">
               <h5 class="card-title">Savings Goals</h5>
-              <p class="card-text">Create and track multiple savings goals to reach your milestones faster. Visualize progress with milestones and celebrate each achievement.</p>
+              <p class="card-text">
+                Create and track multiple savings goals to reach your milestones faster. Visualize progress with milestones and celebrate each achievement.
+              </p>
             </div>
           </div>
         </div>
@@ -71,7 +84,9 @@
             </div>
             <div class="card-body text-center">
               <h5 class="card-title">Spending Tracker</h5>
-              <p class="card-text">Visualize your expenses with interactive charts and get insights into your habits. Identify patterns and optimize your spending for a healthier financial future.</p>
+              <p class="card-text">
+                Visualize your expenses with interactive charts and get insights into your habits. Identify patterns and optimize your spending for a healthier financial future.
+              </p>
             </div>
           </div>
         </div>
