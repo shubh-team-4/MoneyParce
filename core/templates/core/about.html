@@ -1,10 +1,76 @@
 {% extends 'core/base.html' %}
+
+{% block extra_head %}
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+{% endblock %}
+
 {% block content %}
-<h2>About MoneyParce</h2>
-    <p>
-  MoneyParce is a web application focussed on personal finance and helping users save, budget, and track their spending. MoneyParce was designed with keeping out users financial data securely and intuitively in mind. Whether you want to track your expenses or store your budgets, MoneyParce is built for you.
-    </p>
-    <p>
-    MoneyParce integrates the ____ and _____ APIs to ensure our users gets the best financial support possible while maintaining an intuitive and user-friendly interface.
-    </p>
+  <div class="container mt-5 mb-5">
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+      <h2 class="display-5 fw-semibold">About MoneyParce</h2>
+      <p class="text-muted">Empowering you to take control of your financial future.</p>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="row align-items-center mb-5">
+      <div class="col-md-6 text-center">
+        <i class="bi bi-globe2 fs-1 text-primary mb-3"></i>
+      </div>
+      <div class="col-md-6">
+        <h3 class="fw-medium">Our Mission</h3>
+        <p>At MoneyParce, we believe everyone deserves an easy, secure, and intuitive way to manage their money. Our web application is built to help you:</p>
+        <ul class="list-unstyled">
+          <li><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Track spending in real time</li>
+          <li><i class="bi bi-piggy-bank me-2 text-primary"></i>Set and achieve savings goals</li>
+          <li><i class="bi bi-wallet2 me-2 text-primary"></i>Create budgets you can actually stick to</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Integration Section -->
+    <div class="bg-light p-4 rounded mb-5">
+      <h3 class="fw-medium text-center mb-3">Integrations</h3>
+      <p class="text-center">MoneyParce integrates the ____ and ____ APIs to ensure our users get the best financial support possible while maintaining an intuitive and user-friendly interface.</p>
+    </div>
+
+    <!-- Team Section -->
+    <div class="mb-5">
+      <h3 class="fw-medium text-center mb-4">Meet the Team</h3>
+      <div class="row justify-content-center">
+        <div class="col-sm-6 col-md-4 mb-4 text-center">
+          <img src="https://via.placeholder.com/120" alt="Jorge Ramirez" class="rounded-circle mb-2" width="120" height="120">
+          <h5 class="mb-0">Jorge Ramirez</h5>
+          <small class="text-muted">Product Owner</small>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4 text-center">
+          <img src="https://via.placeholder.com/120" alt="Jason Anthony Low" class="rounded-circle mb-2" width="120" height="120">
+          <h5 class="mb-0">Jason Anthony Low</h5>
+          <small class="text-muted">Scrum Master</small>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4 text-center">
+          <img src="https://via.placeholder.com/120" alt="Satvik Marripalapu" class="rounded-circle mb-2" width="120" height="120">
+          <h5 class="mb-0">Satvik Marripalapu</h5>
+          <small class="text-muted">Full Stack Developer</small>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4 text-center">
+          <img src="https://via.placeholder.com/120" alt="Erick Caballero" class="rounded-circle mb-2" width="120" height="120">
+          <h5 class="mb-0">Erick Caballero</h5>
+          <small class="text-muted">Front End Developer</small>
+        </div>
+        <div class="col-sm-6 col-md-4 mb-4 text-center">
+          <img src="https://via.placeholder.com/120" alt="Arya Gujarathi" class="rounded-circle mb-2" width="120" height="120">
+          <h5 class="mb-0">Arya Gujarathi</h5>
+          <small class="text-muted">Back End Developer</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call-to-Action -->
+    <div class="text-center">
+      <h4 class="fw-medium mb-3">Ready to take control of your finances?</h4>
+      <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">Join MoneyParce</a>
+    </div>
+  </div>
 {% endblock %}

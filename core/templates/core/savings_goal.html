@@ -1,27 +1,68 @@
-<!-- core/templates/core/savings_goal.html -->
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block content %}
-<div class="box">
-    <h2>Savings Goals</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ savings_goal_form.as_p }}
-        <button type="submit" class="btn btn-primary">Create Savings Goal</button>
-    </form>
-</div>
+{% block extra_head %}
+  <!-- Ensure Bootstrap JS/CSS are included in base.html -->
+{% endblock %}
 
-{% for goal in goals %}
-    <div class="box">
-    <h4>{{ goal.goal_name }}</h4>
-        <p>Goal: ${{ goal.target_amount }} | Progress: ${{ goal.curr_amount }}</p>
-        <progress value="{{ goal.curr_amount }}" max="{{ goal.target_amount }}" style="width: 100%"></progress>
-    <form method="post" action="{% url 'add_to_goal' goal.id %}">
-        {% csrf_token %}
-        {{ goal.add_form.as_p }}
-        <button type="submit" class="btn btn-primary">Add to Goal</button>
-    </form>
+{% block content %}
+<div class="container mt-5 mb-5">
+  <!-- Header with Create Button aligned right -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Savings Goals</h2>
+    <!-- Trigger Modal Button -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGoalModal">
+      Create Savings Goal
+    </button>
+  </div>
+
+  <!-- Create Goal Modal -->
+  <div class="modal fade" id="createGoalModal" tabindex="-1" aria-labelledby="createGoalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createGoalModalLabel">New Savings Goal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" id="savingsGoalForm">
+            {% csrf_token %}
+            {{ savings_goal_form.as_p }}
+            <div class="text-end">
+              <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- List of Goals -->
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for goal in goals %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <!-- Title and Remove Button aligned -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">{{ goal.goal_name }}</h5>
+              <button type="button" class="btn btn-sm btn-outline-danger">Remove Goal</button>
+            </div>
+            <!-- Progress Text and Bar -->
+            <p class="card-text">Progress: {% widthratio goal.curr_amount goal.target_amount 100 %}% (${{ goal.curr_amount }})</p>
+            <progress value="{{ goal.curr_amount }}" max="{{ goal.target_amount }}" class="w-100 mb-3"></progress>
+            <!-- Add to Goal Form -->
+            <form method="post" action="{% url 'add_to_goal' goal.id %}">
+              {% csrf_token %}
+              <div class="input-group">
+                {{ goal.add_form.amount }}
+                <button type="submit" class="btn btn-outline-primary">Add to Goal</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 </div>
-{% endfor %}
 {% endblock %}
