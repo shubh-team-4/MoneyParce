@@ -52,6 +52,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\erick\Documents\fildi-simulator\fild-simulator\MoneyParce\core\static\core" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="MoneyParce" type="Python.DjangoServer" factoryName="Django server">
       <module name="MoneyParce" />
@@ -98,7 +103,7 @@
       <workItem from="1744847656713" duration="3527000" />
       <workItem from="1745302255208" duration="1075000" />
       <workItem from="1745303395089" duration="11062000" />
-      <workItem from="1745426557399" duration="3893000" />
+      <workItem from="1745426557399" duration="4949000" />
     </task>
     <servers />
   </component>
