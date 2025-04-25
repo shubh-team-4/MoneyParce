@@ -8,6 +8,9 @@ from .forms import SignUpForm, TransactionForm, CategoryForm, BudgetForm, Saving
 from .models import Transaction, Category, UserProfile, SavingsGoal
 import io
 import reportlab.pdfgen.canvas
+import json
+from django.utils.safestring import mark_safe
+
 
 def index(request):
     """Public page explaining MoneyParce."""
@@ -113,8 +116,11 @@ def dashboard(request):
     for cat in categories:
         cat_expenses = transactions.filter(category=cat, transaction_type='expense')
         total = sum(t.amount for t in cat_expenses)
-        category_breakdown.append((cat.name, total))
+        if total > 0:
+            category_breakdown.append((cat.name, total))
     context = {
+        'category_labels': mark_safe(json.dumps([cat for cat, _ in category_breakdown])),
+        'category_data': mark_safe(json.dumps([amt for _, amt in category_breakdown])),
         'income': income,
         'expenses': expenses,
         'net_worth': net_worth,
