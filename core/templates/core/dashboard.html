@@ -97,6 +97,20 @@
     </div>
   </div>
 
+<!-- Income by Category -->
+  <div class="row mb-4">
+    <div class="col">
+      <div class="card p-3">
+        <h5>Income by Category</h5>
+        <ul>
+          {% for category, total in income_category_breakdown %}
+          <li>{{ category }}: ${{ total }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- Chart.js CDN and scripts (same as before) -->

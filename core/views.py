@@ -135,7 +135,7 @@ def dashboard(request):
         'income_category_data': mark_safe(json.dumps([amt for _, amt in income_category_breakdown])),
         'net_worth': net_worth,
         'category_breakdown': category_breakdown,
-
+        'income_category_breakdown': income_category_breakdown,
     }
     return render(request, 'core/dashboard.html', context)
 
