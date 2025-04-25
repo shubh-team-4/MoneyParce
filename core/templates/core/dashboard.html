@@ -126,8 +126,8 @@
           borderWidth: 1
         },
         {
-          // Example line overlay for Balance
-          label: 'Balance',
+          // Example line overlay for Networth
+          label: 'Networth',
           type: 'line',
           data: [2, 3, 5, 5, 2, 4, 5, 2, 5, 2, 5, 8],
           borderColor: 'rgba(54, 162, 235, 1)',
@@ -212,10 +212,10 @@
   const revenuePieChart = new Chart(ctxRevenuePie, {
     type: 'pie',
     data: {
-      labels: ['SEO','Website Dev','Social Media','Email Marketing','Analytics'],
+      labels: {{ income_category_labels }},
       datasets: [
         {
-          data: [20, 25, 15, 25, 15],
+          data: {{ income_category_data }},
           backgroundColor: [
             '#ffa630','#df3b57','#3ab795','#4BC0C0','#0a60db'
           ]

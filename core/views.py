@@ -118,13 +118,24 @@ def dashboard(request):
         total = sum(t.amount for t in cat_expenses)
         if total > 0:
             category_breakdown.append((cat.name, total))
+    # Calculate income breakdown by category
+    income_category_breakdown = []
+    for cat in categories:
+        cat_income = transactions.filter(category=cat, transaction_type='income')
+        total_income = sum(t.amount for t in cat_income)
+        if total_income > 0:
+            income_category_breakdown.append((cat.name, total_income))
+
     context = {
+        'expenses': expenses,
         'category_labels': mark_safe(json.dumps([cat for cat, _ in category_breakdown])),
         'category_data': mark_safe(json.dumps([amt for _, amt in category_breakdown])),
         'income': income,
-        'expenses': expenses,
+        'income_category_labels': mark_safe(json.dumps([cat for cat, _ in income_category_breakdown])),
+        'income_category_data': mark_safe(json.dumps([amt for _, amt in income_category_breakdown])),
         'net_worth': net_worth,
         'category_breakdown': category_breakdown,
+
     }
     return render(request, 'core/dashboard.html', context)
 
