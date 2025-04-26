@@ -75,10 +75,24 @@
                   <a class="nav-link" href="{% url 'user_list' %}">Manage Users</a>
                 </li>
               {% endif %}
+              <!-- About Link -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">About</a>
+              </li>
               <!-- Home Icon -->
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'dashboard' %}" title="Dashboard">
                   <i class="fas fa-home"></i>
+                </a>
+              </li>
+               <!-- Dark Mode Toggle Icon -->
+              <li class="nav-item">
+                <a href="{% url 'dark mode' %}" class="nav-link" title="Toggle Dark Mode">
+                  {% if theme == 'dark' %}
+                    <i class="fas fa-sun"></i>
+                  {% else %}
+                    <i class="fas fa-moon"></i>
+                  {% endif %}
                 </a>
               </li>
               <!-- User Avatar Dropdown -->
@@ -120,16 +134,6 @@
                 </ul>
               </li>
 
-              <!-- Dark Mode Toggle Icon -->
-              <li class="nav-item">
-                <a href="{% url 'dark mode' %}" class="nav-link" title="Toggle Dark Mode">
-                  {% if theme == 'dark' %}
-                    <i class="fas fa-sun"></i>
-                  {% else %}
-                    <i class="fas fa-moon"></i>
-                  {% endif %}
-                </a>
-              </li>
             {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Home</a>
