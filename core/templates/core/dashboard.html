@@ -39,8 +39,8 @@
     <div class="col-md-4 mb-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Expenses {{ current_month_year|default:"July 2022" }}</h5>
-          <h6 class="text-muted">{{ expenses|default:"272,200" }} $</h6>
+          <h5 class="card-title">Expenses {{ current_month_year|default:"January 2025" }}</h5>
+          <h6 class="text-muted">{{ expenses|default:"0" }} $</h6>
           <canvas id="expensesPieChart" height="200"></canvas>
         </div>
       </div>
@@ -63,8 +63,8 @@
     <div class="col-md-4 mb-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Revenue {{ current_month_year|default:"July 2022" }}</h5>
-          <h6 class="text-muted">{{ income|default:"389,000" }} $</h6>
+          <h5 class="card-title">Revenue {{ current_month_year|default:"January 2025" }}</h5>
+          <h6 class="text-muted">{{ income|default:"0" }} $</h6>
           <canvas id="revenuePieChart" height="200"></canvas>
         </div>
       </div>

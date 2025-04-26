@@ -10,6 +10,7 @@ import io
 import reportlab.pdfgen.canvas
 import json
 from django.utils.safestring import mark_safe
+from datetime import datetime
 
 
 def index(request):
@@ -109,6 +110,7 @@ def dashboard(request):
     income = sum(t.amount for t in transactions if t.transaction_type == 'income')
     expenses = sum(t.amount for t in transactions if t.transaction_type == 'expense')
     net_worth = income - expenses
+    current_month_year = datetime.now().strftime("%B %Y")
 
     # Calculate spending breakdown by category
     categories = Category.objects.filter(user=request.user)
@@ -136,6 +138,7 @@ def dashboard(request):
         'net_worth': net_worth,
         'category_breakdown': category_breakdown,
         'income_category_breakdown': income_category_breakdown,
+        'current_month_year': current_month_year,
     }
     return render(request, 'core/dashboard.html', context)
 
