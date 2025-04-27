@@ -14,12 +14,22 @@ import io, json
 
 from io import BytesIO
 from django.http import FileResponse
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER
+
+
+from io import BytesIO
+from django.http import FileResponse
 from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 )
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER
 
 from .forms import (
     SignUpForm, TransactionForm, CategoryForm,
@@ -237,7 +247,7 @@ def export_pdf(request):
     # Buffer for PDF output
     buf = BytesIO()
 
-    # Fetch data
+    # Fetch and compute data
     txs = Transaction.objects.filter(user=request.user).order_by('date')
     inc = sum(t.amount for t in txs if t.transaction_type == 'income')
     exp = sum(t.amount for t in txs if t.transaction_type == 'expense')
@@ -250,30 +260,48 @@ def export_pdf(request):
         topMargin=60, bottomMargin=60,
     )
     styles = getSampleStyleSheet()
-    title_style = styles['Title']
-    heading_style = styles['Heading2']
-    normal_style = styles['BodyText']
+    # Custom styles: centered and larger fonts
+    title_style = ParagraphStyle(
+        'TitleCentered',
+        parent=styles['Title'],
+        fontSize=24,
+        alignment=TA_CENTER,
+    )
+    heading_style = ParagraphStyle(
+        'Heading2Centered',
+        parent=styles['Heading2'],
+        fontSize=18,
+        alignment=TA_CENTER,
+    )
+    normal_style = ParagraphStyle(
+        'BodyCentered',
+        parent=styles['BodyText'],
+        fontSize=12,
+        alignment=TA_CENTER,
+    )
 
     elements = []
 
     # Title
     elements.append(Paragraph(f"Financial Report for {request.user.username}", title_style))
-    elements.append(Spacer(1, 12))
+    elements.append(Spacer(1, 24))
 
-    # Summary table (Income / Expenses)
+    # Summary table
     summary_data = [
         ['Metric', 'Amount'],
         ['Total Income', f"${inc:,.2f}"],
-        ['Total Expenses', f"${exp:,.2f}"],
+        ['Total Expenses', f"${exp:,.2f}"]
     ]
-    summary_table = Table(summary_data, colWidths=[200, 100], hAlign='LEFT')
+    summary_table = Table(summary_data, colWidths=[200, 100], hAlign='CENTER')
     summary_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#4F81BD')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 14),  # header font
+        ('FONTSIZE', (0, 1), (-1, -1), 12),  # body font
         ('ALIGN', (1, 1), (-1, -1), 'RIGHT'),
         ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor("#F2F2F2")]),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#F2F2F2')]),
     ]))
     elements.append(summary_table)
     elements.append(Spacer(1, 24))
@@ -282,7 +310,7 @@ def export_pdf(request):
     elements.append(Paragraph("Transactions", heading_style))
     elements.append(Spacer(1, 12))
 
-    # Build transactions table data
+    # Transactions table
     trans_data = [['Date', 'Type', 'Amount']]
     for t in txs:
         trans_data.append([
@@ -291,21 +319,33 @@ def export_pdf(request):
             f"${t.amount:,.2f}"
         ])
 
-    trans_table = Table(trans_data, colWidths=[100, 120, 100], hAlign='LEFT')
+    trans_table = Table(trans_data, colWidths=[100, 120, 100], hAlign='CENTER')
     trans_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#C0504D")),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#C0504D')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 14),
+        ('FONTSIZE', (0, 1), (-1, -1), 12),
         ('ALIGN', (2, 1), (2, -1), 'RIGHT'),
         ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor("#F9F9F9")]),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#F9F9F9')]),
     ]))
     elements.append(trans_table)
 
-    # Build PDF
-    doc.build(elements)
+    # Advice for future planning
+    advice = (
+        "Good job! Your income is greater than your expenses, so keep it up!"
+        if inc > exp
+        else
+        "Looks like your expenses are greater than your income. Work on saving more in the next term so you can build your finances!"
+    )
+    elements.append(Spacer(1, 24))
+    elements.append(Paragraph("Advice for Future Planning", heading_style))
+    elements.append(Spacer(1, 12))
+    elements.append(Paragraph(advice, normal_style))
 
-    # Return as response
+    # Build and return PDF
+    doc.build(elements)
     buf.seek(0)
     return FileResponse(buf, as_attachment=True, filename='financial_report.pdf')
 
