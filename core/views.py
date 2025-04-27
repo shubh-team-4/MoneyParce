@@ -12,6 +12,15 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import io, json
 
+from io import BytesIO
+from django.http import FileResponse
+from reportlab.platypus import (
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+)
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+
 from .forms import (
     SignUpForm, TransactionForm, CategoryForm,
     BudgetForm, SavingsGoalForm, AddToGoalForm
@@ -225,24 +234,80 @@ def reports(request):
 
 @login_required
 def export_pdf(request):
-    buf = io.BytesIO()
-    p = io.BytesIO()  # using reportlab directly
-    from reportlab.pdfgen import canvas
-    can = canvas.Canvas(buf)
-    txs = Transaction.objects.filter(user=request.user)
-    inc = sum(t.amount for t in txs if t.transaction_type=='income')
-    exp = sum(t.amount for t in txs if t.transaction_type=='expense')
-    can.drawString(100,800,f"Report for {request.user.username}")
-    can.drawString(100,780,f"Income: ${inc}")
-    can.drawString(100,760,f"Expenses: ${exp}")
-    y = 740
+    # Buffer for PDF output
+    buf = BytesIO()
+
+    # Fetch data
+    txs = Transaction.objects.filter(user=request.user).order_by('date')
+    inc = sum(t.amount for t in txs if t.transaction_type == 'income')
+    exp = sum(t.amount for t in txs if t.transaction_type == 'expense')
+
+    # Set up the document
+    doc = SimpleDocTemplate(
+        buf,
+        pagesize=letter,
+        rightMargin=40, leftMargin=40,
+        topMargin=60, bottomMargin=60,
+    )
+    styles = getSampleStyleSheet()
+    title_style = styles['Title']
+    heading_style = styles['Heading2']
+    normal_style = styles['BodyText']
+
+    elements = []
+
+    # Title
+    elements.append(Paragraph(f"Financial Report for {request.user.username}", title_style))
+    elements.append(Spacer(1, 12))
+
+    # Summary table (Income / Expenses)
+    summary_data = [
+        ['Metric', 'Amount'],
+        ['Total Income', f"${inc:,.2f}"],
+        ['Total Expenses', f"${exp:,.2f}"],
+    ]
+    summary_table = Table(summary_data, colWidths=[200, 100], hAlign='LEFT')
+    summary_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#4F81BD")),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('ALIGN', (1, 1), (-1, -1), 'RIGHT'),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor("#F2F2F2")]),
+    ]))
+    elements.append(summary_table)
+    elements.append(Spacer(1, 24))
+
+    # Transactions heading
+    elements.append(Paragraph("Transactions", heading_style))
+    elements.append(Spacer(1, 12))
+
+    # Build transactions table data
+    trans_data = [['Date', 'Type', 'Amount']]
     for t in txs:
-        can.drawString(100,y,f"{t.date} – {t.transaction_type}: ${t.amount}")
-        y -= 20
-        if y < 50: break
-    can.showPage()
-    can.save(); buf.seek(0)
-    return FileResponse(buf, as_attachment=True, filename='report.pdf')
+        trans_data.append([
+            t.date.strftime("%Y-%m-%d"),
+            t.transaction_type.title(),
+            f"${t.amount:,.2f}"
+        ])
+
+    trans_table = Table(trans_data, colWidths=[100, 120, 100], hAlign='LEFT')
+    trans_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#C0504D")),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('ALIGN', (2, 1), (2, -1), 'RIGHT'),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor("#F9F9F9")]),
+    ]))
+    elements.append(trans_table)
+
+    # Build PDF
+    doc.build(elements)
+
+    # Return as response
+    buf.seek(0)
+    return FileResponse(buf, as_attachment=True, filename='financial_report.pdf')
 
 
 # Savings Goals
