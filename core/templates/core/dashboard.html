@@ -5,31 +5,31 @@
 
   <!-- Top Bar: Greeting -->
   <div class="row mb-4">
-  <div class="col d-flex justify-content-between align-items-center">
-    <h4>Hi, {{ user.username|default:"User" }}</h4>
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdownTop"
-              data-bs-toggle="dropdown" aria-expanded="false">
-        Actions
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdownTop">
-        <li><a class="dropdown-item" href="{% url 'create_transaction' %}">New Transaction</a></li>
-        <li><a class="dropdown-item" href="{% url 'add_category' %}">Add Category</a></li>
-        <li><a class="dropdown-item" href="{% url 'set_budget' %}">Set Budget</a></li>
-        <li><a class="dropdown-item" href="{% url 'reports' %}">Reports</a></li>
-        <li><a class="dropdown-item" href="{% url 'savings_goal' %}">Manage Savings</a></li>
-      </ul>
+    <div class="col d-flex justify-content-between align-items-center">
+      <h4>Hi, {{ user.username|default:"User" }}</h4>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdownTop"
+                data-bs-toggle="dropdown" aria-expanded="false">
+          Actions
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdownTop">
+          <li><a class="dropdown-item" href="{% url 'create_transaction' %}">New Transaction</a></li>
+          <li><a class="dropdown-item" href="{% url 'add_category' %}">Add Category</a></li>
+          <li><a class="dropdown-item" href="{% url 'set_budget' %}">Set Budget</a></li>
+          <li><a class="dropdown-item" href="{% url 'reports' %}">Reports</a></li>
+          <li><a class="dropdown-item" href="{% url 'savings_goal' %}">Manage Savings</a></li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
 
-  <!-- Row with charts and moved Actions dropdown -->
+  <!-- Row with charts -->
   <div class="row mb-4">
-    <!-- Income & Expense Chart with Actions dropdown -->
+    <!-- Income & Expense Chart -->
     <div class="col-md-8 mb-3">
       <div class="card">
         <div class="card-body">
-            <h5 class="mb-0">Income &amp; Expense</h5>
+          <h5 class="mb-0">Income &amp; Expense</h5>
           <canvas id="incomeExpenseChart" height="100"></canvas>
         </div>
       </div>
@@ -39,17 +39,16 @@
     <div class="col-md-4 mb-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Expenses {{ current_month_year|default:"January 2025" }}</h5>
-          <h6 class="text-muted">{{ expenses|default:"0" }} $</h6>
+          <h5 class="card-title">Expenses {{ current_month_year }}</h5>
+          <h6 class="text-muted">${{ expenses }}</h6>
           <canvas id="expensesPieChart" height="200"></canvas>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Additional charts and stats remain unchanged -->
+  <!-- Account Balance & Revenue -->
   <div class="row mb-4">
-    <!-- Account Balance (Line Chart) -->
     <div class="col-md-8 mb-3">
       <div class="card">
         <div class="card-body">
@@ -58,13 +57,11 @@
         </div>
       </div>
     </div>
-
-    <!-- Revenue Pie Chart -->
     <div class="col-md-4 mb-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Revenue {{ current_month_year|default:"January 2025" }}</h5>
-          <h6 class="text-muted">{{ income|default:"0" }} $</h6>
+          <h5 class="card-title">Income {{ current_month_year }}</h5>
+          <h6 class="text-muted">${{ income }}</h6>
           <canvas id="revenuePieChart" height="200"></canvas>
         </div>
       </div>
@@ -83,28 +80,28 @@
     </div>
   </div>
 
-  <!-- Spending by Category -->
+  <!-- Spending by Category (list fallback) -->
   <div class="row mb-4">
     <div class="col">
       <div class="card p-3">
         <h5>Spending by Category</h5>
         <ul>
-          {% for category, total in category_breakdown %}
-          <li>{{ category }}: ${{ total }}</li>
+          {% for category, total in category_breakdown_list %}
+            <li>{{ category }}: ${{ total }}</li>
           {% endfor %}
         </ul>
       </div>
     </div>
   </div>
 
-<!-- Income by Category -->
+  <!-- Income by Category (list fallback) -->
   <div class="row mb-4">
     <div class="col">
       <div class="card p-3">
         <h5>Income by Category</h5>
         <ul>
-          {% for category, total in income_category_breakdown %}
-          <li>{{ category }}: ${{ total }}</li>
+          {% for category, total in income_category_breakdown_list %}
+            <li>{{ category }}: ${{ total }}</li>
           {% endfor %}
         </ul>
       </div>
@@ -113,38 +110,65 @@
 
 </div>
 
-<!-- Chart.js CDN and scripts (same as before) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 <script>
-  // ----------------------------------
-  // Income & Expense (Bar + Line) Chart
-  // ----------------------------------
-  const ctxIncomeExpense = document.getElementById('incomeExpenseChart').getContext('2d');
-  const incomeExpenseChart = new Chart(ctxIncomeExpense, {
+  // Pull in data from context (already JSON-encoded)
+  const months = {{ monthly_labels|safe }};
+  const incs   = {{ monthly_income_data|safe }};
+  const exps   = {{ monthly_expense_data|safe }};
+  const nets   = {{ monthly_networth_data|safe }};
+
+  const initExpLabels = {{ category_labels|safe }};
+  const initExpData   = {{ category_data|safe }};
+  const initIncLabels = {{ income_category_labels|safe }};
+  const initIncData   = {{ income_category_data|safe }};
+
+  const expByMonth = {{ monthly_expense_breakdown|safe }};
+  const incByMonth = {{ monthly_income_breakdown|safe }};
+
+  // Determine current month index
+  const currLabel = new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    year:  'numeric'
+  }).format(new Date()); // e.g. "Apr 2025"
+  const currIdx = months.indexOf(currLabel);
+
+  // Trim networth line after current month
+  const netsLine = nets.map((v,i) => i <= currIdx ? v : null);
+
+  // Build and trim cumulative balance
+  const cumRaw = months.map((_,i) =>
+    incs.slice(0,i+1).reduce((a,b)=>a+b,0)
+    - exps.slice(0,i+1).reduce((a,b)=>a+b,0)
+  );
+  const cumLine = cumRaw.map((v,i) => i <= currIdx ? v : null);
+
+  // 1) Income & Expense Bar+Line chart
+  const ctxIE = document.getElementById('incomeExpenseChart').getContext('2d');
+  const incomeExpenseChart = new Chart(ctxIE, {
     type: 'bar',
     data: {
-      labels: ['01/2022','02/2022','03/2022','04/2022','05/2022','06/2022','07/2022','08/2022','09/2022','10/2022','11/2022','12/2022'],
+      labels: months,
       datasets: [
         {
           label: 'Income',
-          data: [10, 12, 15, 20, 18, 22, 25, 24, 30, 28, 35, 40],
-          backgroundColor: 'rgb(6,167,125, .8)',
-          borderColor: 'rgb(6,167,125, .6)',
+          data: incs,
+          backgroundColor: 'rgba(6,167,125,0.8)',
+          borderColor: 'rgba(6,167,125,0.6)',
           borderWidth: 1
         },
         {
           label: 'Expense',
-          data: [8, 9, 10, 15, 16, 18, 20, 22, 25, 26, 30, 32],
-          backgroundColor: 'rgb(239,121,138, .8)',
-          borderColor: 'rgb(239,121,138)',
+          data: exps,
+          backgroundColor: 'rgba(239,121,138,0.8)',
+          borderColor: 'rgba(239,121,138,1)',
           borderWidth: 1
         },
         {
-          // Example line overlay for Networth
           label: 'Networth',
           type: 'line',
-          data: [2, 3, 5, 5, 2, 4, 5, 2, 5, 2, 5, 8],
-          borderColor: 'rgba(54, 162, 235, 1)',
+          data: netsLine,
+          borderColor: 'rgba(54,162,235,1)',
           fill: false,
           tension: 0.1
         }
@@ -152,95 +176,67 @@
     },
     options: {
       responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+      scales: { y: { beginAtZero: true } },
+      onClick: (evt) => {
+        const points = incomeExpenseChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
+        if (!points.length) return;
+        const idx = points[0].index;
+        const month = months[idx];
+        // update expenses pie
+        const e = expByMonth[month] || {labels: [], data: []};
+        expensesPieChart.data.labels = e.labels;
+        expensesPieChart.data.datasets[0].data = e.data;
+        expensesPieChart.update();
+        // update revenue pie
+        const i = incByMonth[month] || {labels: [], data: []};
+        revenuePieChart.data.labels = i.labels;
+        revenuePieChart.data.datasets[0].data = i.data;
+        revenuePieChart.update();
       }
     }
   });
 
-  // ------------------------
-  // Expenses Pie Chart
-  // ------------------------
-  const ctxExpensesPie = document.getElementById('expensesPieChart').getContext('2d');
-  const expensesPieChart = new Chart(ctxExpensesPie, {
+  // 2) Expenses Pie Chart (initially current month)
+  const ctxExp = document.getElementById('expensesPieChart').getContext('2d');
+  const expensesPieChart = new Chart(ctxExp, {
     type: 'pie',
     data: {
-      labels: {{ category_labels }},
-      datasets: [
-        {
-          data: {{ category_data }},
-          backgroundColor: [
-            '#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40','#FF6384'
-          ]
-        }
-      ]
+      labels: initExpLabels,
+      datasets: [{ data: initExpData, backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40'] }]
     },
-    options: {
-      responsive: true
-    }
+    options: { responsive: true }
   });
 
-  // ------------------------
-  // Account Balance (Line) Chart
-  // ------------------------
-  const ctxAccountBalance = document.getElementById('accountBalanceChart').getContext('2d');
-  const accountBalanceChart = new Chart(ctxAccountBalance, {
+  // 3) Account Balance Chart (cumulative)
+  const ctxAB = document.getElementById('accountBalanceChart').getContext('2d');
+  const accountBalanceChart = new Chart(ctxAB, {
     type: 'line',
     data: {
-      labels: ['01/2022','02/2022','03/2022','04/2022','05/2022','06/2022','07/2022','08/2022'],
+      labels: months,
       datasets: [
         {
-          label: 'Checking',
-          data: [1000, 1200, 1400, 1300, 1500, 1700, 1900, 2100],
-          backgroundColor: 'rgba(255, 99, 132, 1)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-          fill: false
-        },
-        {
-          label: 'Savings',
-          data: [3000, 3200, 3400, 3600, 3800, 4000, 4200, 4500],
-          backgroundColor: 'rgba(75, 192, 192, 1)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-          fill: false
-        },
-        {
-          label: 'Investments',
-          data: [5000, 5200, 5400, 5600, 5700, 5900, 6000, 6200],
-          backgroundColor: 'rgba(255, 166, 48, 1)',
-            borderColor: 'rgba(255, 166, 48, 1)',
+          label: 'Balance',
+          data: cumLine,
+          borderColor: 'rgba(75,192,192,1)',
           fill: false
         }
       ]
     },
     options: {
-      responsive: true
+      responsive: true,
+      scales: { y: { beginAtZero: true } }
     }
   });
 
-  // ------------------------
-  // Revenue Pie Chart
-  // ------------------------
-  const ctxRevenuePie = document.getElementById('revenuePieChart').getContext('2d');
-  const revenuePieChart = new Chart(ctxRevenuePie, {
+  // 4) Revenue Pie Chart
+  const ctxRev = document.getElementById('revenuePieChart').getContext('2d');
+  const revenuePieChart = new Chart(ctxRev, {
     type: 'pie',
     data: {
-      labels: {{ income_category_labels }},
-      datasets: [
-        {
-          data: {{ income_category_data }},
-          backgroundColor: [
-            '#ffa630','#df3b57','#3ab795','#4BC0C0','#0a60db'
-          ]
-        }
-      ]
+      labels: initIncLabels,
+      datasets: [{ data: initIncData, backgroundColor: ['#ffa630','#df3b57','#3ab795','#4BC0C0','#0a60db'] }]
     },
-    options: {
-      responsive: true
-    }
+    options: { responsive: true }
   });
-</script>
-
 </script>
 {% endblock %}

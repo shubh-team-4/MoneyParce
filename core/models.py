@@ -1,3 +1,4 @@
+# core/models.py
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -5,17 +6,14 @@ class UserProfile(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     theme = models.CharField(max_length=10, default='light')
-    budget = models.FloatField(default = 0)
-    spending = models.FloatField(default = 0)
-    #profile color
+    budget = models.FloatField(default=0)
+    spending = models.FloatField(default=0)
     color = models.CharField(max_length=7, default='#0d6efd')
-    # profile picture:
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
 
     def __str__(self):
         return self.user.username
 
-# New model for expenditure categories (User Story #11)
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -24,7 +22,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-# changed the transaction model to support income/expense and categorization (user Stories 8, 9, 10)
 class Transaction(models.Model):
     TRANSACTION_TYPES = [
         ('income', 'Income'),
